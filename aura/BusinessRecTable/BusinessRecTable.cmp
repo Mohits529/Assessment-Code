@@ -1,0 +1,83 @@
+<aura:component controller="BusinessClass" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="wrapperList" type="Businessclass.Wrapperclass[]"/>
+    <aura:attribute name="objInfoCase" type="Business__c" default="{sobjectType : 'Business__c'}" />
+    <aura:attribute name="Likedisable" type="boolean" default="true" />
+    <aura:attribute name="picklistValues" type="List" default='--- None ---' access="public"/>
+    <aura:attribute name="selectedOptions" type="List" default='--- None ---' access="public"/>
+    
+    
+    
+    <div class="slds-col slds-size_1-of-1 slds-medium-size_10-of-12 slds-align_absolute-center" >
+        
+        <lightning:dualListbox aura:id="fieldId" name="Select Premise"  label="Select Business City"
+                               sourceLabel="Available Cities"
+                               selectedLabel="Selected Cities"
+                               options="{! v.picklistValues }"
+                               value="{! v.selectedOptions }"
+                               onchange="{!c.selectoption}"/>
+    </div>
+    <br/>
+    <div class="slds-align_absolute-center">
+        <lightning:button aura:id="View"  class="slds-button_neutral" label="filter" onclick="{!c.getReport}"  variant="preview"  iconName="utility:preview" disabled="{!v.Likedisable}"/>          
+    </div>
+    <br/>
+    
+    <table class="slds-table slds-table_bordered">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th class="slds-text-title_caps" scope="col">
+                    <div class="slds-truncate" title="Region Name">Region Name</div>
+                </th>
+                
+                <th class="slds-text-title_caps" scope="col">
+                    <div class="slds-truncate" title="Business Name">Business Name</div>
+                </th>
+                <th class="slds-text-title_caps" scope="col">
+                    <div class="slds-truncate" title="Sales">Sales</div>
+                </th>
+                <th class="slds-text-title_caps" scope="col">
+                    <div class="slds-truncate" title="Operating Region">Operating Region</div>
+                </th>
+                
+            </tr>
+        </thead>
+        <aura:if isTrue="{!v.wrapperList}">
+            <tbody> 
+                <aura:iteration items="{!v.wrapperList}" var="wraprecord">
+                    <aura:iteration items="{!wraprecord.busunessRecList}" var="record" indexVar="varindex"> 
+                        <tr rowspan="2" class="slds-hint-parent slds-border_right">
+                            <aura:if isTrue="{!varindex==0}">
+                                <td rowspan="{!wraprecord.busunessRecList.length}" data-label="Region Name">
+                                    <div class="slds-truncate" title="{!wraprecord.Region}">{!wraprecord.Region}({!wraprecord.sumofSale})</div>
+                                    
+                                </td>
+                            </aura:if>
+                            
+                            <td data-label="Business Name">
+                                <div class="slds-truncate" title="{!record.Name}">{!record.Name}</div>
+                            </td>
+                            
+                            
+                            <td data-label="Sales">
+                                <div class="slds-truncate " title="{!record.Sales__c}">{!record.Sales__c}</div>
+                            </td>
+                            
+                            
+                            <td data-label="Operating Region">
+                                <div class="slds-truncate" title="{!record.Operating_Region__c}">{!record.Operating_Region__c}</div>
+                            </td>
+                        </tr>                   
+                    </aura:iteration>                
+                </aura:iteration>     
+                
+                
+            </tbody>
+            <aura:set attribute="else">
+                <p>There is no record in the system with above cities. </p>
+            </aura:set>
+        </aura:if>
+    </table>
+    
+</aura:component>

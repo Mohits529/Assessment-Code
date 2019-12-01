@@ -1,0 +1,14 @@
+.THIS button[title="Move selection down"] {
+    display:none;
+}
+.THIS button[title="Move selection up"] {
+    display:none;
+}
+
+
+
+
+.THIS .slds-dueling-list__options, .THIS.slds-picklist__options {
+     height: 8rem;
+    WIDTH: 10REM;
+}
